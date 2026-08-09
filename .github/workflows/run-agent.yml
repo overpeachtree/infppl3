@@ -1,1 +1,41 @@
+name: Run Research Agent
 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade google-genai ddgs
+
+      - name: Run agent
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3-flash-preview
+        run: |
+          python -m agent.agent
+
+      - name: Commit agent state and proposal
+        run: |
+          git config user.name "infppl3-agent"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add memory/ outputs/
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Run bounded research agent"
+            git pull --rebase origin main
+            git push origin main
+          fi
