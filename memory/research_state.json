@@ -1,1 +1,11 @@
-
+{
+  "goal": "Find one recent substantive interview, podcast, or talk featuring the intended Charles H. Bennett.",
+  "person_file": "001-charles-h-bennett.md",
+  "step": 0,
+  "max_steps": 5,
+  "status": "not_started",
+  "searches": [],
+  "sources_seen": [],
+  "best_candidate": null,
+  "notes": []
+}
